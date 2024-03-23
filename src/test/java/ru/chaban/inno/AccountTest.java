@@ -77,5 +77,14 @@ class AccountTest {
         account.load(-1);
         log.info("4. cur: {}", account);
 
+        log.info("Проверка получения по индексу 1");
+        account.load(1);
+        log.info("cur: {}", account);
+
+        log.info("Проверка получения по индексу 0");
+        account.load(0);
+        log.info("cur: {}", account);
+
+
     }
 }

@@ -42,5 +42,14 @@ class BalanceTest {
 
         balance.load(-1);
         log.info("4. cur: {}", balance);
+
+        log.info("Проверка получения по индексу 1");
+        balance.load(1);
+        log.info("cur: {}", balance);
+
+        log.info("Проверка получения по индексу 0");
+        balance.load(0);
+        log.info("cur: {}", balance);
+
     }
 }

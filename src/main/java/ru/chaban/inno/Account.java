@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.chaban.inno.data.AccountData;
+import ru.chaban.inno.data.BalanceData;
 import ru.chaban.inno.service.Loadable;
 import ru.chaban.inno.service.UnitImpl;
 
@@ -72,8 +73,23 @@ public class Account extends UnitImpl implements Loadable {
     @Override
     public int save() {
         AccountData accountData = new AccountData();
-        accountData.setName(this.getCurData().getName());
-        accountData.setBalance(new ArrayList<>(this.getSnapshot().get(this.getSnapshot().size() - 1).getBalance()));
+
+
+        accountData.setName(new String(this.getCurData().getName() == null ? "" : this.getCurData().getName()));
+
+        List<Balance> balances = new ArrayList<>();
+
+        for (Balance balanceFrom : this.getCurData().getBalance()) {
+            Balance newBalance = new Balance();
+            BalanceData newBalanceData = new BalanceData();
+            newBalanceData.setCur(balanceFrom.getCurData().getCur());
+            newBalanceData.setVal(balanceFrom.getCurData().getVal());
+
+            newBalance.setCurData(newBalanceData);
+            balances.add(newBalance);
+        }
+
+        accountData.setBalance(balances);
         snapshot.add(accountData);
         return snapshot.size() - 1;
     }

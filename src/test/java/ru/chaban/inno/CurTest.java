@@ -28,5 +28,14 @@ class CurTest {
         log.info("Последнее сохраненное");
         cur.load(-1);
         log.info("4. cur: {}", cur);
+
+        log.info("Проверка сохраненного значения по индексу 1");
+        cur.load(1);
+        log.info("4. cur: {}", cur);
+
+        log.info("Проверка сохраненного значения по индексу 0");
+        cur.load(0);
+        log.info("4. cur: {}", cur);
+
     }
 }

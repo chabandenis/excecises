@@ -27,7 +27,7 @@ public class Cur extends UnitImpl implements Loadable {
         String oldName = curData.getName();
         putCommand(() -> this.curData.setName(oldName));
 
-        this.curData.setName(name);
+        this.curData.setName(new String(name));
     }
 
     @Override
@@ -46,9 +46,9 @@ public class Cur extends UnitImpl implements Loadable {
 
     @Override
     public int save() {
-        CurData CurData = new CurData();
-        CurData.setName(this.getCurData().getName());
-        snapshot.add(curData);
+        CurData curDataForSave = new CurData();
+        curDataForSave.setName(new String(this.getCurData().getName()));
+        snapshot.add(curDataForSave);
         return snapshot.size() - 1;
     }
 }
