@@ -40,7 +40,7 @@ class BalanceTest {
 
         log.info("3. cur: {}", balance);
 
-        balance.load();
+        balance.load(-1);
         log.info("4. cur: {}", balance);
     }
 }

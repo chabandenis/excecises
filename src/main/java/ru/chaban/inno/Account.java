@@ -9,6 +9,7 @@ import ru.chaban.inno.service.UnitImpl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 //@NoArgsConstructor
@@ -18,11 +19,12 @@ import java.util.Optional;
 @Slf4j
 public class Account extends UnitImpl implements Loadable {
     private AccountData curData = new AccountData();
-    private AccountData snapshot = new AccountData();
 
-    /*public Account(String nameSet, List<Balance> balances) {
-        curData = new AccountData(nameSet, balances);
-    }*/
+    private List<AccountData> snapshot = new ArrayList<>();
+
+    private AccountData getLastSnapshot() {
+        return this.getSnapshot().get(this.getSnapshot().size() - 1);
+    }
 
     public void setBalance(Cur cur, BigDecimal value) {
 //        if (curData.getBalance().size() >0){
@@ -52,14 +54,27 @@ public class Account extends UnitImpl implements Loadable {
 
 
     @Override
-    public void load() {
-        curData.setBalance(new ArrayList<>(curData.getBalance()));
-        curData.setName(snapshot.getName());
+    public void load(int item) {
+        if (item >= snapshot.size() || item < -1) {
+            throw new RuntimeException("Запрошено восстановление несуществующей точки");
+        }
+
+        if (item == -1) {
+            curData.setBalance(new ArrayList<>(curData.getBalance()));
+            curData.setName(getLastSnapshot().getName());
+            return;
+        }
+
+        curData.setBalance(new ArrayList<>(snapshot.get(item).getBalance()));
+        curData.setName(snapshot.get(item).getName());
     }
 
     @Override
-    public void save() {
-        snapshot.setName(this.getCurData().getName());
-        snapshot.setBalance(new ArrayList<>(this.getSnapshot().getBalance()));
+    public int save() {
+        AccountData accountData = new AccountData();
+        accountData.setName(this.getCurData().getName());
+        accountData.setBalance(new ArrayList<>(this.getSnapshot().get(this.getSnapshot().size() - 1).getBalance()));
+        snapshot.add(accountData);
+        return snapshot.size() - 1;
     }
 }

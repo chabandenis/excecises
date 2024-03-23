@@ -74,7 +74,7 @@ class AccountTest {
 
         log.info("3. cur: {}", account);
 
-        account.load();
+        account.load(-1);
         log.info("4. cur: {}", account);
 
     }

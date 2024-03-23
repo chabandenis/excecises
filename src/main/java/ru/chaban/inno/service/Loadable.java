@@ -1,6 +1,6 @@
 package ru.chaban.inno.service;
 
 public interface Loadable<E> {
-    void load();
-    void save();
+    void load(int item);
+    int save();
 }
